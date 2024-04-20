@@ -2,9 +2,9 @@ import { getInvoice } from "./services/getInvoice";
 
 export const InvoiceApp = () => {
 
-    const {id, name, client, company, items} = getInvoice();
-    const {name: clientName, lastName, address} = client;
-    const { country, city, street, number} = address;
+    const { id, name, client, company, items } = getInvoice();
+    const { name: clientName, lastName, address } = client;
+    const { country, city, street, number } = address;
 
     return (
         <>
@@ -26,7 +26,30 @@ export const InvoiceApp = () => {
                 <li>{company.fiscalNumber}</li>
             </ul>
             <h4>Productos de la Factura</h4>
-            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {items.map(({key, product, price, quantity}) => (
+
+                            <tr key = {key}>
+                                <td>{product}</td>
+                                <td>{price}</td>
+                                <td>{quantity}</td>
+                            </tr>
+                        ))
+                    }
+
+                    
+                </tbody>
+            </table>
+
         </>
     )
 }
