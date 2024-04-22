@@ -1,55 +1,38 @@
 import { getInvoice } from "./services/getInvoice";
+import { InvoiceView } from "./components/InvoiceView";
+import { ClientView } from "./components/ClientView";
+import { CompanyView } from "./components/CompanyView";
+import { ListItemsView } from "./components/ListItemsView";
 
 export const InvoiceApp = () => {
 
     const { id, name, client, company, items } = getInvoice();
-    const { name: clientName, lastName, address } = client;
-    const { country, city, street, number } = address;
+    
 
     return (
         <>
-            <h1>Ejemplo Factura</h1>
-            <ul>
-                <li>Id: {id}</li>
-                <li>Name: {name}</li>
-            </ul>
-            <h3>Datos del Cliente</h3>
-            <ul>
-                <li>{clientName} {lastName}</li>
-                <li>{country}</li>
-                <li>{city}</li>
-                <li>{street} {number}</li>
-            </ul>
-            <h3>Datos de la empresa</h3>
-            <ul>
-                <li>{company.name}</li>
-                <li>{company.fiscalNumber}</li>
-            </ul>
-            <h4>Productos de la Factura</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div className="container">
+                <div className="card my-3">
+                    <div className="card-header">
+                        Ejemplo Factura
+                    </div>
+                    <div className="card-body">
+                        <InvoiceView id={id} name={name} />
 
-                    {items.map(({key, product, price, quantity}) => (
+                        <div className="row my-3">
+                            <div className="col">
 
-                            <tr key = {key}>
-                                <td>{product}</td>
-                                <td>{price}</td>
-                                <td>{quantity}</td>
-                            </tr>
-                        ))
-                    }
+                                <ClientView title="Datos del Cliente" client={client} />
+                            </div>
+                            <div className="col">
 
-                    
-                </tbody>
-            </table>
-
+                                <CompanyView title="Datos de la empresa" company={company}/>
+                            </div>
+                        </div>
+                        <ListItemsView title="Productos de la Factura" items={items}/>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

@@ -1,4 +1,4 @@
-import {invoice} from "../data/invoice"
+import { invoice } from "../data/invoice";
 
 export const getInvoice = () => {
     console.log(invoice);
