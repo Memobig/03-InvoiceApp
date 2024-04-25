@@ -16,6 +16,7 @@ export const ListItemsView = ({title, items})=>{
                                 </tr>
                             </thead>
                             <tbody>
+                                
 
                                 {items.map(({ key, product, price, quantity }) => (
 
