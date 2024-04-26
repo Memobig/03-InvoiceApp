@@ -5,6 +5,7 @@ import { ClientView } from "./components/ClientView";
 import { CompanyView } from "./components/CompanyView";
 import { ListItemsView } from "./components/ListItemsView";
 import { TotalView } from "./components/TotalView";
+import { FormItemsView } from "./components/FormItemsView";
 const invoiceInitial = {
     id: 0,
     name: '',
@@ -29,14 +30,10 @@ export const InvoiceApp = () => {
 
     const [counter, setCounter] = useState(4);
 
-    const [formItemsState, setFormItemsState] = useState({
-        product: '',
-        price: '',
-        quantity: '',
-    });
 
 
-    const {product, price, quantity} = formItemsState;
+
+    
 
     const [invoice, setInvoice] = useState(invoiceInitial);
 
@@ -52,55 +49,22 @@ export const InvoiceApp = () => {
         setItems(data.items);
     }, []);
 
-    useEffect(() => {
-        // console.log('el precio ha sido modificado');
-    }, [price]);
-    useEffect(() => {
-        // console.log('un campo del formulario cambio');
-    }, [formItemsState]);
+
 useEffect(()=>{
     setTotal(calculateTotal(items));
     console.log('los items cambiaron');
 },[items])
 
+const handlerAddItem = ({product, price, quantity}) => {
 
 
+    setItems([...items, {key: counter, 
+        product: product.trim(), 
+        price: +price.trim(), 
+        quantity: parseInt(quantity.trim(), 10)}]);
 
-
-    
-    const onInputChange = ({target: {value, name}}) => {
-        // console.log(name);
-        // console.log(value);
-        setFormItemsState({
-            ...formItemsState,
-            [name] : value,
-        });
-    }
-
-    const onInvoiceItemSubmit = (event) => {
-        event.preventDefault();
-        if(product.trim().length <= 1) return;
-        if(price.trim().length <= 1) return;
-        if(isNaN(price.trim())) {
-            alert('Error el valor ingresado no es un número');
-            return;
-        }
-        if(quantity.trim().length < 1) return;
-        if(isNaN(quantity.trim())) return;
-
-        setItems([...items, {key: counter, 
-            product: product.trim(), 
-            price: +price.trim(), 
-            quantity: parseInt(quantity.trim(), 10)}]);
-
-            setFormItemsState({
-                product: '',
-                price: '',
-                quantity: '',
-            });
-
-            setCounter(counter +1);
-    }
+        setCounter(counter +1);
+}
 
     return (
         <>
@@ -124,31 +88,7 @@ useEffect(()=>{
                         </div>
                         <ListItemsView title="Productos de la Factura" items={items}/>
                         <TotalView total={total}/>
-                        <form className="w-50" onSubmit={event => onInvoiceItemSubmit(event)}>
-                            <input 
-                            type="text" 
-                            name="product" 
-                            value={product}
-                            placeholder="Producto" 
-                            className="form-control m-3" onChange={onInputChange}/>
-                            <input 
-                            type="text" 
-                            name="price" 
-                            value={price}
-                            placeholder="Precio" 
-                            className="form-control m-3" onChange={event => onInputChange(event)}/>
-                            <input 
-                            type="text" 
-                            name="quantity" 
-                            value={quantity}
-                            placeholder="Cantidad" 
-                            className="form-control m-3" onChange={onInputChange}/>
-                            <button 
-                            type="submit" 
-                            className="btn btn-primary m-3">
-                                Nuevo Item
-                                </button>
-                        </form>
+                        <FormItemsView handler={(newItem)=> handlerAddItem(newItem)}/>
                     </div>
                 </div>
             </div>
