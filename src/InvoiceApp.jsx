@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getInvoice } from "./services/getInvoice";
+import { getInvoice, calculateTotal } from "./services/getInvoice";
 import { InvoiceView } from "./components/InvoiceView";
 import { ClientView } from "./components/ClientView";
 import { CompanyView } from "./components/CompanyView";
@@ -27,8 +27,23 @@ const invoiceInitial = {
 
 export const InvoiceApp = () => {
 
+    const [counter, setCounter] = useState(4);
+
+    const [formItemsState, setFormItemsState] = useState({
+        product: '',
+        price: '',
+        quantity: '',
+    });
+
+
+    const {product, price, quantity} = formItemsState;
+
     const [invoice, setInvoice] = useState(invoiceInitial);
-    
+
+    const { id, name, client, company } = invoice;
+
+    const [total, setTotal] = useState(0);
+
     const [items, setItems] = useState([]);
     useEffect(() => {
         const data = getInvoice();
@@ -37,17 +52,20 @@ export const InvoiceApp = () => {
         setItems(data.items);
     }, []);
 
-    const { id, name, client, company, items: itemsInitial, total } = invoice;
+    useEffect(() => {
+        // console.log('el precio ha sido modificado');
+    }, [price]);
+    useEffect(() => {
+        // console.log('un campo del formulario cambio');
+    }, [formItemsState]);
+useEffect(()=>{
+    setTotal(calculateTotal(items));
+    console.log('los items cambiaron');
+},[items])
 
-    const [formItemsState, setFormItemsState] = useState({
-        product: '',
-        price: '',
-        quantity: '',
-    });
 
-    const {product, price, quantity} = formItemsState;
 
-    const [counter, setCounter] = useState(4);
+
 
     
     const onInputChange = ({target: {value, name}}) => {
