@@ -1,5 +1,5 @@
 export const invoice = {
-    id: 10,
+    id: 1,
     name: 'Componentes PC',
     client: {
         name: 'Pepe',
@@ -17,19 +17,19 @@ export const invoice = {
     },
     items: [
         {
-            key: 1,
+            id: 1,
             product: 'Cpu Intel i7',
             price: 499,
             quantity: 1,
         },
         {
-            key: 2,
+            id: 2,
             product: 'Corsair Keyboard Mecanico',
             price: 150,
             quantity: 2,
         },
         {
-            key: 3,
+            id: 3,
             product: 'Monitor Asus',
             price: 350,
             quantity: 1,
